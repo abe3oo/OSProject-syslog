@@ -1,4 +1,5 @@
 import re
+import chardet
 '''
 def parse_log_file(file_path):
     logs = []
@@ -17,8 +18,14 @@ def parse_log_file(file_path):
 with open('D:\Daneshgah\OS\PJ\syslog_ywcp\syslogg.txt', 'r') as f:
     lanes = f.read().split('\n')
 '''
+file_path = 'D:\Daneshgah\OS\PJ\syslog_ywcp\syslogg.txt'
+def detect_encoding(file_path):
+    with open(file_path, 'rb') as f:
+        result = chardet.detect(f.read())
+    return result['encoding']
+fileencode = detect_encoding(file_path)
 def line_spliter():
-    with open('D:\Daneshgah\OS\PJ\syslog_ywcp\syslogg.txt', 'r') as f:
+    with open(file_path, 'r', encoding=fileencode) as f:
         lines = []
         for line in f:
             data = line.split()
