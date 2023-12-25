@@ -1,6 +1,8 @@
 import re
-import chardet
+import sys
 from datetime import timedelta, datetime
+import chardet
+
 
 
 #list zakhire sazi ...
@@ -22,16 +24,18 @@ def parse_log_file(file_path):
 #l = parse_log_file("C:\Users\Amir\Downloads\Compressed\syslog_ywcp")
 
 '''
-with open('D:\Daneshgah\OS\PJ\syslog_ywcp\syslogg.txt', 'r') as f:
+with open('D:\Daneshgah\OSL\PJ\syslog_ywcp\syslogg.txt', 'r') as f:
     lanes = f.read().split('\n')
 '''
-file_path = 'D:\Daneshgah\OS\PJ\syslog_ywcp\syslogg.txt'
+file_path = 'D:\Daneshgah\OSL\PJ\syslog_ywcp\syslogg.txt'
 #find kardan file incode
 
 def detect_encoding(file_path):
     with open(file_path, 'rb') as f:
         result = chardet.detect(f.read())
     return result['encoding']
+
+print('detect encode ...') #print loading
 fileencode = detect_encoding(file_path)
 #......................
 
@@ -44,6 +48,7 @@ def line_spliter():
             lines.append(data)
         return lines
         #print(lines)
+print('loading data ...') #print loading
 generallist = line_spliter()
 print(generallist)
 
@@ -94,7 +99,7 @@ def search_by_Date_and_Time(gnlist,tlist,stime,etime):
         return time_list
     start_time = stime  # زمان شروع
     end_time = etime   # زمان پایان
-    time_step = timedelta(minutes=1)  # گام زمانی، در اینجا 30 دقیقه
+    time_step = timedelta(seconds=1)  # گام زمانی، در اینجا 30 دقیقه
     result_time_list = generate_time_range(start_time, end_time, step=time_step)
     
     index_search = []
@@ -126,8 +131,34 @@ while True:
 
     elif act == '-d':
         time_extractor(generallist)
+        startdate = 0
+        enddate = 0
+        print('input your start date. month, day, hour, min, sec')
+        print('example: 3 1 11 54 12')
+        try:
+            x, y, a, b ,c = list(map(int, input('input >> ').split()))
+            startdate = datetime(1000,x,y,a,b,c)
+            print('input your end date. month, day, hour, min, sec')
+            x, y, a, b ,c = list(map(int, input('input >> ').split()))
+            enddate = datetime(1000,x,y,a,b,c)
+        except:
+            print('invalid format.')
+
+        if startdate != 0:
+            print('Loading ...')
+            lst1 = []
+            lst1 = search_by_Date_and_Time(generallist,lstTime,startdate,enddate)
+            if len(lst1) >= 1:
+                print(lst1)
+            else:
+                print('No data found !!!')
+
+    elif act == '-m':
         
-       
+
+        pass
+
+        
     elif act == '-c':
         exit()
 
