@@ -8,7 +8,7 @@ import chardet
 #list zakhire sazi ...
 generallist = []
 lstTime = []
-
+allsectypes = ['emerg', 'alert', 'crit', 'err', 'warn', 'notice', 'info', 'debug']
 '''
 def parse_log_file(file_path):
     logs = []
@@ -24,7 +24,7 @@ def parse_log_file(file_path):
 #l = parse_log_file("C:\Users\Amir\Downloads\Compressed\syslog_ywcp")
 
 '''
-with open('D:\Daneshgah\OSL\PJ\syslog_ywcp\syslogg.txt', 'r') as f:
+with open('D:\Daneshgah\OS\PJ\syslog_ywcp\syslogg.txt', 'r') as f:
     lanes = f.read().split('\n')
 '''
 file_path = 'D:\Daneshgah\OSL\PJ\syslog_ywcp\syslogg.txt'
@@ -112,7 +112,14 @@ def search_by_Date_and_Time(gnlist,tlist,stime,etime):
         gnlistnew.append(gnlist[i])
     return gnlistnew
     
-
+def search_by_seclvl(gnlist,seclvl):
+    resgnlist = []
+    for i in gnlist:
+        if seclvl in i[5]:
+            resgnlist.append(i)
+        #elif seclvl not in i[5] and seclvl == 'info':
+            #resgnlist.append(i)
+    return resgnlist
 
 
 
@@ -125,7 +132,7 @@ while True:
 
     if act == '--help':
         print('\n-d ==> search by date and clock')
-        print('-e ==> search by event type')
+        print('-s ==> search by security level')
         print('-m ==> search in message text')
         print('-c ==> exit')
 
@@ -153,10 +160,16 @@ while True:
             else:
                 print('No data found !!!')
 
-    elif act == '-m':
+    elif act == '-s':
+        print('input your security level')
+        print(f"security levels: {allsectypes}")
+        secu = input('input >> ')
+        result = search_by_seclvl(generallist, secu)
+        if len(result) >= 1:
+            print(result)
+        else:
+            print('No data found !!!')
         
-
-        pass
 
         
     elif act == '-c':
