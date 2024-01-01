@@ -8,6 +8,7 @@ import chardet
 #list zakhire sazi ...
 generallist = []
 lstTime = []
+finalresut = []
 allsectypes = ['emerg', 'alert', 'crit', 'err', 'warn', 'notice', 'info', 'debug']
 '''
 def parse_log_file(file_path):
@@ -27,7 +28,7 @@ def parse_log_file(file_path):
 with open('D:\Daneshgah\OS\PJ\syslog_ywcp\syslogg.txt', 'r') as f:
     lanes = f.read().split('\n')
 '''
-file_path = 'D:\Daneshgah\OSL\PJ\syslog_ywcp\syslogg.txt'
+file_path = 'D:\Daneshgah\OSL\PJ\syslog_ywcp\syslog'
 #find kardan file incode
 
 def detect_encoding(file_path):
@@ -50,7 +51,7 @@ def line_spliter():
         #print(lines)
 print('loading data ...') #print loading
 generallist = line_spliter()
-print(generallist)
+#print(generallist)
 
 def time_extractor(gnlist):
     #def tabdil mah be number
@@ -119,8 +120,27 @@ def search_by_seclvl(gnlist,seclvl):
             resgnlist.append(i)
         #elif seclvl not in i[5] and seclvl == 'info':
             #resgnlist.append(i)
+    
     return resgnlist
 
+
+def search_by_messageword(gnlist, word):
+    searchresult = []
+    for i in gnlist:
+        fulltext = " ".join(i)
+        if word in fulltext.casefold():
+            searchresult.append(i)
+    return searchresult
+
+def pars_result(lstresult):
+    fresult = []
+    for i in lstresult:
+        x = ' '.join(i)
+        fresult.append(x)
+    return fresult
+
+def export_result():
+    pass
 
 
 
@@ -169,9 +189,20 @@ while True:
             print(result)
         else:
             print('No data found !!!')
-        
+    
+    elif act == '-m':
+        print('input your message for search')
+        message = input('input >> ')
+        mesresult = search_by_messageword(generallist, message)
+        if len(mesresult) >= 1:
+            finalresut = pars_result(mesresult)
+            
+        else:
+            print('No data found !!!')
 
         
     elif act == '-c':
         exit()
+    else:
+        print('wrong command!!!')
 
