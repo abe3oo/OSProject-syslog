@@ -100,7 +100,7 @@ def search_by_Date_and_Time(gnlist,tlist,stime,etime):
         return time_list
     start_time = stime  # زمان شروع
     end_time = etime   # زمان پایان
-    time_step = timedelta(seconds=1)  # گام زمانی، در اینجا 30 دقیقه
+    time_step = timedelta(seconds=1)  # گام زمانی، در اینجا 1 ثانیهه
     result_time_list = generate_time_range(start_time, end_time, step=time_step)
     
     index_search = []
@@ -139,8 +139,14 @@ def pars_result(lstresult):
         fresult.append(x)
     return fresult
 
-def export_result():
-    pass
+def export_result(fresultt,name):
+    c = open(f'{name}.txt', 'w')
+    c.write(f'{str(datetime.now())}\n........................\n')
+    c.close()
+    f = open(f'{name}.txt', 'a')
+    for i in fresultt:
+        f.write(f'{i}\n')
+    
 
 
 
@@ -206,10 +212,16 @@ while True:
     elif act == '-w':
         print(f'Number of results: {len(finalresult)}')
         print('............')
-        p = input('print or export(p/e): ')
-        if p == 'p':
-            for i in finalresult:
-                print(i)
+        if len(finalresult) > 1:
+            
+            p = input('print or export(p/e) >> ')
+            if p == 'p':
+                for i in finalresult:
+                    print(i)
+            elif p == 'e':
+                name = input('enter your file name >> ')
+                export_result(finalresult, name)
+            
 
         
     elif act == '-c':
