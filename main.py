@@ -8,7 +8,7 @@ import chardet
 #list zakhire sazi ...
 generallist = []
 lstTime = []
-finalresut = []
+finalresult = []
 allsectypes = ['emerg', 'alert', 'crit', 'err', 'warn', 'notice', 'info', 'debug']
 '''
 def parse_log_file(file_path):
@@ -154,6 +154,7 @@ while True:
         print('\n-d ==> search by date and clock')
         print('-s ==> search by security level')
         print('-m ==> search in message text')
+        print('-w ==> watch results')
         print('-c ==> exit')
 
     elif act == '-d':
@@ -173,10 +174,11 @@ while True:
 
         if startdate != 0:
             print('Loading ...')
-            lst1 = []
-            lst1 = search_by_Date_and_Time(generallist,lstTime,startdate,enddate)
-            if len(lst1) >= 1:
-                print(lst1)
+            timeresult = []
+            timeresult = search_by_Date_and_Time(generallist,lstTime,startdate,enddate)
+            if len(timeresult) >= 1:
+                print(f'{len(timeresult)} results found')
+                finalresult = pars_result(timeresult)
             else:
                 print('No data found !!!')
 
@@ -184,9 +186,10 @@ while True:
         print('input your security level')
         print(f"security levels: {allsectypes}")
         secu = input('input >> ')
-        result = search_by_seclvl(generallist, secu)
-        if len(result) >= 1:
-            print(result)
+        seccresult = search_by_seclvl(generallist, secu)
+        if len(seccresult) >= 1:
+            print(f'{len(seccresult)} results found')
+            finalresult = pars_result(seccresult)
         else:
             print('No data found !!!')
     
@@ -195,10 +198,18 @@ while True:
         message = input('input >> ')
         mesresult = search_by_messageword(generallist, message)
         if len(mesresult) >= 1:
-            finalresut = pars_result(mesresult)
-            
+            print(f'{len(mesresult)} results found')
+            finalresult = pars_result(mesresult)
         else:
             print('No data found !!!')
+
+    elif act == '-w':
+        print(f'Number of results: {len(finalresult)}')
+        print('............')
+        p = input('print or export(p/e): ')
+        if p == 'p':
+            for i in finalresult:
+                print(i)
 
         
     elif act == '-c':
