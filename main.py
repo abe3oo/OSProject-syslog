@@ -91,6 +91,7 @@ def time_extractor(gnlist):
 def search_by_Date_and_Time(gnlist,tlist,stime,etime):
     Tlisthere = tlist
     gnlistnew = []
+    '''
     def generate_time_range(start_time, end_time, step=timedelta(hours=1)):
         current_time = start_time
         time_list = []  # لیست برای ذخیره خروجی ساعت‌ها به صورت اشیاء datetime
@@ -102,13 +103,13 @@ def search_by_Date_and_Time(gnlist,tlist,stime,etime):
     end_time = etime   # زمان پایان
     time_step = timedelta(seconds=1)  # گام زمانی، در اینجا 1 ثانیهه
     result_time_list = generate_time_range(start_time, end_time, step=time_step)
-    
+    '''
     index_search = []
-    for times in result_time_list:
-        for timestlist in Tlisthere:
-            if times == timestlist:
-                index_search.append(Tlisthere.index(timestlist))
-                Tlisthere[Tlisthere.index(timestlist)] = '0'
+    
+    for timestlist in Tlisthere:
+        if stime < timestlist and timestlist < etime:
+            index_search.append(Tlisthere.index(timestlist))
+            Tlisthere[Tlisthere.index(timestlist)] = '0'
     for i in index_search:
         gnlistnew.append(gnlist[i])
     return gnlistnew
@@ -164,6 +165,7 @@ while True:
         print('-c ==> exit')
 
     elif act == '-d':
+        lstTime = []
         time_extractor(generallist)
         startdate = 0
         enddate = 0
